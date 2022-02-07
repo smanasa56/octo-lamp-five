@@ -24,10 +24,14 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+
+
   });
+
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
+
   const quizArray = [
     {
       q: 'Which is the third planet from the sun?',
@@ -44,7 +48,25 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+
+    // 3. ADDING TWO MORE QUESTIONS
+    {
+      q: 'Where is the city Perth located',
+      o: ['Victoria', 'Western Australia', 'ACT', 'Tasmania'],
+      a: 1,
+    },
+    {
+      q: 'When is Australia Day',
+      o: ['Jan 26', 'Feb 2', 'June 23', 'Oct 15'],
+      a: 0,
+    }
   ];
+
+    // RESET BUTTON 
+    const resetButton = document.getElementById('btnReset');
+    resetButton.addEventListener('click', () => {
+    location.reload();
+   });
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
@@ -61,8 +83,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
     });
-  };
 
+    // COUNTDOWN TIMER
+    var sec = 45;
+    var time = setInterval(myTimer, 1000);
+    function myTimer() {
+      document.getElementById('time').innerHTML = sec + " second/s left";
+            sec--;
+          if (sec == -2) {
+                clearInterval(time);
+                alert("Time is up. Press OK to restart");
+                location.reload();
+            }
+        }  
+    };
+   
+    function clickSubmit() {
+      document.getElementById("btnSubmit").click();
+    }
+    setTimeout(clickSubmit, 45000);
+
+  const submitButton = document.getElementById('btnSubmit');
+  submitButton.addEventListener('click', () => {
   // Calculate the score
   const calculateScore = () => {
     let score = 0;
@@ -76,15 +118,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (quizItem.a == i) {
           //change background color of li element here
-        }
+          liElement.style.background = "cyan";
+        
 
         if (radioElement.checked) {
-          // code for task 1 goes here
+          //code for task 1 goes here
+          score++;
         }
       }
+      }
     });
+    return score;
   };
-
+  document.getElementById("score").innerHTML= `<strong>Your score is ${calculateScore()} out of 5<strong>`;
+  alert(`Score : ${calculateScore()}/5`)
+});
   // call the displayQuiz function
   displayQuiz();
 });
